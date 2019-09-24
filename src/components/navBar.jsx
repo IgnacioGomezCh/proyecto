@@ -26,6 +26,12 @@ const NavBar = () => {
                     <NavLink className="nav-item nav-link" to="/register">
                         Registrarse
           </NavLink>
+                    <NavLink className="nav-item nav-link" to="/login">
+                        Inicio de Sesión
+          </NavLink>
+                    <NavLink className="nav-item nav-link" to="/recover">
+                        Recuperar Contraseña
+          </NavLink>
                 </div>
             </div>
         </nav>
