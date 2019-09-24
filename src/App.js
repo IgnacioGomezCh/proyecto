@@ -1,17 +1,19 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import './App.css';
 import NavBar from './components/navBar';
-import LoginForm from './components/loginForm';
+import RegisterForm from './components/registerForm';
+import Landing from './components/landing';
 
 function App() {
   return (
     <React.Fragment>
       <NavBar />
-      <div class="starter-template m-2 mt-5">
-        <LoginForm />
-      </div>
-
-    </React.Fragment>
+      <div className="content">
+        <Route path="/register" exact component={RegisterForm} />
+        <Route path="/" exact component={Landing} />
+      </div >
+    </React.Fragment >
 
   );
 }

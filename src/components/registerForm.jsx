@@ -30,14 +30,13 @@ class RestaurantForm extends Form {
     };
 
     doSubmit = () => {
-        const { name, food, schedule, cost, contactInfo, x, y } = this.state.data;
-        const costINT = parseInt(cost, 10);
+        const { name, lName, email, password } = this.state.data;
         console.log(this.state)
     };
 
     render() {
         return (
-            <div>
+            <div className="m-3">
                 <h1>Nuevo Usuario</h1>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput("name", "Nombre")}
