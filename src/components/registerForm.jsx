@@ -31,7 +31,14 @@ class RegisterForm extends Form {
 
     doSubmit = () => {
         const { name, lName, email, password } = this.state.data;
+        const { authProps } = this.props;
         console.log(this.state)
+        const fullName = name + " " + lName
+        authProps.signUp(email,password,fullName)
+        .catch((err) => {
+            console.log('Error signun', err);
+            this.setState({ loading: false });
+        });
     };
 
     render() {

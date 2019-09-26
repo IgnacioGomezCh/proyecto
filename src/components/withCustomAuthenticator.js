@@ -19,7 +19,7 @@ export function withCustomAuthenticator(Comp){
         handleSignUp = (username, password, name) => {
             return new Promise((resolve,reject) => {
                 Auth.signUp({
-                    //username: name,
+                    username: username,
                     password: password,
                     attributes: {
                         email: username,
