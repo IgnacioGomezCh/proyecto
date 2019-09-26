@@ -16,6 +16,30 @@ export function withCustomAuthenticator(Comp){
             }
         }
 
+        handleSignUp = (username, password, name) => {
+            return new Promise((resolve,reject) => {
+                Auth.signUp({
+                    //username: name,
+                    password: password,
+                    attributes: {
+                        email: username,
+                        name: name
+                    }
+                })
+                .then(response => {
+                    this.setState({ loading: false });
+                    console.log('SignUp',response)
+                    resolve()
+                    //this.handleSignIn(username,password)
+                })
+                .catch(err => {
+                    console.log('Error', err);
+                    this.setState({ authState: 'unauthenticated', authData: null });
+                    reject(err.message);
+                })
+            });
+        }
+
         handleSignIn = (username, password) => {
             return new Promise((resolve, reject) => {
                 Auth.signIn(username, password)
@@ -90,7 +114,8 @@ export function withCustomAuthenticator(Comp){
             }
             else if(authState === 'unauthenticated'){
                 const authProps = {
-                    signIn: this.handleSignIn
+                    signIn: this.handleSignIn,
+                    signUp: this.handleSignUp
                 };
                 return <LoginForm authProps={authProps} changeState={this.handleAuthStateChange}/>
             }

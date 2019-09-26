@@ -1,9 +1,9 @@
 const dev = {
     auth: {
-        identityPoolId: 'us-east-1:3d418dce-f3e8-4431-9c78-37a70b7c7cc5',
+        identityPoolId: 'us-east-1:4c32a440-cf31-491f-b5e5-c578bf263768',
         region:'us-east-1',
-        userPoolId:'us-east-1_cKpk4NU6g',
-        userPoolWebClientId: '27c1341jvdl7758g1ltbnap2of'
+        userPoolId:'us-east-1_rzsFryn1A',
+        userPoolWebClientId: '5ch814ounev4c6fjv1ipna55hd'
     }
 };
 

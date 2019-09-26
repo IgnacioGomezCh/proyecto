@@ -22,14 +22,20 @@ class LoginForm extends Form {
     };
 
     doSubmit = () => {
+        const { authProps } = this.props;
         const { email, password } = this.state.data;
         console.log(this.state)
+        authProps.signIn(email, password)
+                    .catch((err) => {
+                        console.log('Error signIn', err);
+                        this.setState({ loading: false });
+                    });
     };
 
     render() {
         return (
             <div className="m-3">
-                <h1>Nuevo Usuario</h1>
+                <h1>Iniciar Sesión</h1>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput("email", "Correo")}
                     {this.renderInputPassword("password", "Contraseña")}
