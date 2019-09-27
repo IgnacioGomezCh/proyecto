@@ -5,19 +5,20 @@ import RegisterForm from './registerForm';
 import Landing from './landing';
 import LoginForm from './loginForm';
 import RecoverForm from './recoverForm';
+import FrontPage from './frontPage';
 
-export function withCustomAuthenticator(Comp){
-    return class extends Component{
-        constructor(props){
+export function withCustomAuthenticator(Comp) {
+    return class extends Component {
+        constructor(props) {
             super(props);
             this.state = {
-                authState : props.authState || 'gettingSession',
-                authData: props.authData || null 
+                authState: props.authState || 'gettingSession',
+                authData: props.authData || null
             }
         }
 
         handleSignUp = (username, password, name) => {
-            return new Promise((resolve,reject) => {
+            return new Promise((resolve, reject) => {
                 Auth.signUp({
                     username: username,
                     password: password,
@@ -26,17 +27,17 @@ export function withCustomAuthenticator(Comp){
                         name: name
                     }
                 })
-                .then(response => {
-                    this.setState({ loading: false });
-                    console.log('SignUp',response)
-                    resolve()
-                    //this.handleSignIn(username,password)
-                })
-                .catch(err => {
-                    console.log('Error', err);
-                    this.setState({ authState: 'unauthenticated', authData: null });
-                    reject(err.message);
-                })
+                    .then(response => {
+                        this.setState({ loading: false });
+                        console.log('SignUp', response)
+                        resolve()
+                        //this.handleSignIn(username,password)
+                    })
+                    .catch(err => {
+                        console.log('Error', err);
+                        this.setState({ authState: 'unauthenticated', authData: null });
+                        reject(err.message);
+                    })
             });
         }
 
@@ -100,24 +101,24 @@ export function withCustomAuthenticator(Comp){
         }
 
 
-        render(){
+        render() {
             const { authState } = this.state;
             if (authState === 'gettingSession') {
                 return <Landing />;
             }
-            else if(authState == 'forceChangePassword'){
+            else if (authState == 'forceChangePassword') {
                 const authProps = {
                     completeNewPassword: this.handleCompletePassword,
                     user: this.state.authData
                 };
-                return <RecoverForm authProps={authProps} changeState={this.handleAuthStateChange}/>
+                return <RecoverForm authProps={authProps} changeState={this.handleAuthStateChange} />
             }
-            else if(authState === 'unauthenticated'){
+            else if (authState === 'unauthenticated') {
                 const authProps = {
                     signIn: this.handleSignIn,
                     signUp: this.handleSignUp
                 };
-                return <LoginForm authProps={authProps} changeState={this.handleAuthStateChange}/>
+                return <FrontPage authProps={authProps} changeState={this.handleAuthStateChange} />
             }
             else if (authState === 'signedIn') {
                 const authProps = {
