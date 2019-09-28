@@ -5,8 +5,7 @@ import NavBar from './navBar';
 class Landing extends Component {
     state = {}
     handleClick = () => {
-        const { authProps } = this.props;
-        authProps.signOut();
+        this.props.signOut()
     }
     render() {
         const { authProps } = this.props;
