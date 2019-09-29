@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Auth } from 'aws-amplify';
-import NavBar from './navBar';
-import RegisterForm from './registerForm';
 import Landing from './landing';
-import LoginForm from './loginForm';
 import RecoverForm from './recoverForm';
 import FrontPage from './frontPage';
+import ConfirmationForm from './confirmForm';
 
 export function withCustomAuthenticator(Comp) {
     return class extends Component {
@@ -13,11 +11,14 @@ export function withCustomAuthenticator(Comp) {
             super(props);
             this.state = {
                 authState: props.authState || 'gettingSession',
-                authData: props.authData || null
+                authData: props.authData || null,
+                username: '',
+                password: ''
             }
         }
 
         handleSignUp = (username, password, name) => {
+            this.setState({ username : username, password: password})
             return new Promise((resolve, reject) => {
                 Auth.signUp({
                     username: username,
@@ -30,8 +31,9 @@ export function withCustomAuthenticator(Comp) {
                     .then(response => {
                         this.setState({ loading: false });
                         console.log('SignUp', response)
+                        this.handleSignIn(username,password)
                         resolve()
-                        //this.handleSignIn(username,password)
+                        
                     })
                     .catch(err => {
                         console.log('Error', err);
@@ -42,11 +44,13 @@ export function withCustomAuthenticator(Comp) {
         }
 
         handleSignIn = (username, password) => {
+            this.setState({ username : username,password: password})
             return new Promise((resolve, reject) => {
                 Auth.signIn(username, password)
                     .then(response => {
                         this.setState({ loading: false });
                         const { challengeName } = response;
+                        console.log(challengeName)
                         if (challengeName === 'NEW_PASSWORD_REQUIRED') {
                             this.setState({ authState: 'forceChangePassword', authData: response });
                         } else {
@@ -56,7 +60,11 @@ export function withCustomAuthenticator(Comp) {
                     })
                     .catch(err => {
                         console.log('Error', err);
-                        this.setState({ authState: 'unauthenticated', authData: null });
+                        if(err.code === 'UserNotConfirmedException'){
+                            this.setState({ authState: 'confirmAccount', authData: null });
+                        }else{
+                            this.setState({ authState: 'unauthenticated', authData: null });
+                        }
                         reject(err.message);
                     });
             });
@@ -90,6 +98,24 @@ export function withCustomAuthenticator(Comp) {
 
         }
 
+        handleConfirmSignUp = (code) => {
+            const username = this.state.username
+            return new Promise((resolve, reject) =>{
+                Auth.confirmSignUp(username,code,{
+                    forceAliasCreation: true 
+                }).then(response =>{
+                    console.log(response)
+                    const password = this.state.password
+                    this.handleSignIn(username,password)
+                    resolve()
+                })
+                .catch(err => {
+                    console.log('Error', err);
+                    reject(err.message);
+                })
+            })
+        }
+
 
         componentDidMount() {
             Auth.currentSession()
@@ -112,6 +138,13 @@ export function withCustomAuthenticator(Comp) {
                     user: this.state.authData
                 };
                 return <RecoverForm authProps={authProps} changeState={this.handleAuthStateChange} />
+            }
+            else if(authState === 'confirmAccount'){
+                const authProps = {
+                    email : this.state.username,
+                    confirmSignUp : this.handleConfirmSignUp
+                }
+                return <ConfirmationForm authProps={authProps} changeState={this.handleAuthStateChange}/>
             }
             else if (authState === 'unauthenticated') {
                 const authProps = {

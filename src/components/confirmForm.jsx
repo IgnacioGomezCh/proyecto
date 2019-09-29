@@ -17,7 +17,13 @@ class ConfirmationForm extends Form {
     };
 
     doSubmit = () => {
-
+        const { authProps } = this.props;
+        const { code } = this.state.data;
+        authProps.confirmSignUp(code)
+        .catch((err) => {
+            console.log('Error confirmSignUp', err);
+            this.setState({ loading: false });
+        });
     };
 
     changeTitle = () => {

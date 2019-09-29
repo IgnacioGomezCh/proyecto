@@ -17,7 +17,7 @@ class FrontPage extends Component {
         const { flag } = this.state;
         return (<div>{flag ? <div><LoginForm changeState={this.handleChangeState} authProps={this.props.authProps}></LoginForm> <Link onClick={this.handleChangeState}>
             ¿Nuevo usuario? Regístrese aquí
-        </Link></div> : <RegisterForm authProps={this.props.authProps} ></RegisterForm>}<ConfirmationForm></ConfirmationForm></div>);
+        </Link></div> : <RegisterForm authProps={this.props.authProps} ></RegisterForm>}</div>);
     }
 }
 
