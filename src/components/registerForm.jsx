@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import NavBar from './navBar';
 
 class RegisterForm extends Form {
     state = {
@@ -34,16 +35,17 @@ class RegisterForm extends Form {
         const { authProps } = this.props;
         console.log(this.state)
         const fullName = name + " " + lName
-        authProps.signUp(email,password,fullName)
-        .catch((err) => {
-            console.log('Error signun', err);
-            this.setState({ loading: false });
-        });
+        authProps.signUp(email, password, fullName)
+            .catch((err) => {
+                console.log('Error signun', err);
+                this.setState({ loading: false });
+            });
     };
 
     render() {
         return (
             <div className="m-3">
+                <NavBar />
                 <h1>Nuevo Usuario</h1>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput("name", "Nombre")}
