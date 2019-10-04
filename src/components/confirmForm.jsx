@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import Joi from "joi-browser";
 import Form from "./common/form";
+import styled from 'styled-components';
+import NavBar from './navBar';
+
+
+const Container = styled.div`
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    box-sizing: border-box;
+    text-align: center !important;
+`;
 
 class ConfirmationForm extends Form {
     state = {
@@ -35,13 +47,14 @@ class ConfirmationForm extends Form {
     render() {
         return (
             <div>
-                <div className="m-3">
+                <NavBar />
+                <Container>
                     <h1>Confirmar Usuario</h1>
                     <form onSubmit={this.handleSubmit}>
                         {this.renderInput("code", "Código")}
                         {this.renderButton("Entrar")}
                     </form>
-                </div>
+                </Container>
             </div>
         );
     }

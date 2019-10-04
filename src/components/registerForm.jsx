@@ -2,6 +2,16 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import NavBar from './navBar';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    box-sizing: border-box;
+    text-align: center !important;
+`;
 
 class RegisterForm extends Form {
     state = {
@@ -44,16 +54,18 @@ class RegisterForm extends Form {
 
     render() {
         return (
-            <div className="m-3">
+            <div>
                 <NavBar />
-                <h1>Nuevo Usuario</h1>
-                <form onSubmit={this.handleSubmit}>
-                    {this.renderInput("name", "Nombre")}
-                    {this.renderInput("lName", "Apellido")}
-                    {this.renderInput("email", "Correo")}
-                    {this.renderInputPassword("password", "Contraseña")}
-                    {this.renderButton("Registrarse")}
-                </form>
+                <Container>
+                    <h1>Nuevo Usuario</h1>
+                    <form onSubmit={this.handleSubmit}>
+                        {this.renderInput("name", "Nombre")}
+                        {this.renderInput("lName", "Apellido")}
+                        {this.renderInput("email", "Correo")}
+                        {this.renderInputPassword("password", "Contraseña")}
+                        {this.renderButton("Registrarse")}
+                    </form>
+                </Container>
             </div>
         );
     }

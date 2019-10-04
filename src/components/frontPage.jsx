@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import LoginForm from './loginForm';
 import RegisterForm from './registerForm';
-import { Link, NavLink } from "react-router-dom";
-import ConfirmationForm from './confirmForm';
 class FrontPage extends Component {
     state = { flag: true }
 
@@ -15,9 +13,7 @@ class FrontPage extends Component {
 
     render() {
         const { flag } = this.state;
-        return (<div>{flag ? <div><LoginForm changeState={this.handleChangeState} authProps={this.props.authProps}></LoginForm> <Link onClick={this.handleChangeState}>
-            ¿Nuevo usuario? Regístrese aquí
-        </Link></div> : <RegisterForm authProps={this.props.authProps} ></RegisterForm>}</div>);
+        return (<div>{flag ? <div><LoginForm changeState={this.handleChangeState} authProps={this.props.authProps}></LoginForm></div> : <RegisterForm authProps={this.props.authProps} ></RegisterForm>}</div>);
     }
 }
 
