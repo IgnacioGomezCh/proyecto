@@ -6,6 +6,7 @@
     "aws-amplify": "^1.1.40",
     "aws-amplify-react": "^2.4.4",
     "bootstrap": "^4.1.1",
+    "contentful": "^7.10.0",
     "font-awesome": "^4.7.0",
     "joi-browser": "^13.4.0",
     "react": "^16.9.0",

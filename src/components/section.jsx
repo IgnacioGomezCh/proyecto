@@ -1,23 +1,8 @@
 import React, { Component } from 'react';
-import NavBar from './navBar';
-import DataUnit from './dataUnit'
-import { Auth } from 'aws-amplify';
-import styled from 'styled-components';
 import * as contentful from 'contentful';
+import NavBar from './navBar';
 
-
-const Container = styled.div`
-    width: 100%;
-    padding: 15px;
-    margin: auto;
-    box-sizing: border-box;
-    text-align: center !important;
-`;
-
-
-
-
-class Landing extends Component {
+class Section extends Component {
     state = {
         posts: [],
         sections: [],
@@ -25,25 +10,26 @@ class Landing extends Component {
         courses: [],
         main: ""
     }
-
-    handleClick = () => {
-        this.props.signOut()
-    }
-
     client = contentful.createClient({ space: '2hnq8godjkak', accessToken: 'ts8s9TA9Xsz1lEzKwJ9U46Yl2QaVRrFG81rAmhbr0Z8' })
-
     componentDidMount() {
         this.fetchPosts().then(this.setPosts);
     }
-
     fetchPosts = () => this.client.getEntries();
-
     setPosts = response => {
         this.setState({ posts: response.items })
         this.prepareLists()
+        this.getPost()
     }
 
     prepareLists = () => {
+        const info = []
+        this.state.posts.forEach(entry => {
+            var obj = JSON.parse(JSON.stringify(entry, null, 2))
+            console.log("HERE", obj)
+            info.push(obj)
+        });
+        console.log(info['mainText'])
+
         const sections = []
         const units = []
         const courses = []
@@ -57,7 +43,7 @@ class Landing extends Component {
             else if (entry['fields'].hasOwnProperty('seccion')) {
                 courses.push(entry['fields'])
             }
-
+            console.log("Type", typeof entry)
         });
         this.setState({ sections, units, courses })
         console.log("Sections", this.state.sections)
@@ -65,27 +51,47 @@ class Landing extends Component {
         console.log("Courses", this.state.courses)
     }
 
-    getUserName = () => {
-        const user = Auth.currentUserInfo.name
-        console.log(user)
+
+    getPost = () => {
+        const content = this.state.posts[0]['fields']['mainText']['content']
+        var res = ""
+
+        content.forEach(part => {
+            try {
+                console.log(part['content']['0']['value'])
+                res.concat(part['content']['value']);
+            } catch (error) {
+
+            }
+        });
+        this.setState({ main: res })
     }
+
+
+
+
     render() {
-        const { authProps } = this.props;
-        console.log(authProps)
-        return (
-            <div>
-                <NavBar />
+        return (<div>
+            <NavBar />
+
+            {this.state.posts.map(({ fields }, i) =>
+                <pre key={i}>{JSON.stringify(fields, null, 2)}</pre>
+            )}
 
 
 
-                <Container>
-                    <h1 className="content m-2">Bienvenido</h1>
-                    <br style={{ marginTop: "30px" }} />
-                    <button type="button" class="btn btn-secondary" onClick={this.handleClick}>Cerrar Sesión</button>
-                </Container>
-            </div>
+
+            <p>This is the Blog Page</p>
+            <h1>{this.state.main}</h1>
+            <br />
+
+        </div>
         );
     }
 }
-
-export default Landing;
+/*
+{this.state.posts.map(({ fields }, i) =>
+                <pre key={i}>{JSON.stringify(fields, null, 2)}</pre>
+            )}
+*/
+export default Section;
