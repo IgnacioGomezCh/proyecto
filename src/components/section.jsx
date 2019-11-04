@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import * as contentful from 'contentful';
 import NavBar from './navBar';
+import styled from 'styled-components';
+import Unit from './common/unit';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+
+const SectionContainer = styled.section`
+    flex-direction: column;
+    max-width: 728px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 24px;
+    padding-left: 24px;
+    box-sizing: border-box;
+    width: 100%;
+`;
 
 class Section extends Component {
     state = {
@@ -18,7 +32,16 @@ class Section extends Component {
     setPosts = response => {
         this.setState({ posts: response.items })
         this.prepareLists()
-        this.getPost()
+        //this.getPost()
+        //this.showEntries()
+    }
+
+    showEntries = () => {
+        this.state.posts.forEach( entry => {
+            if(entry.fields){
+                console.log(entry.fields)
+            }
+        })
     }
 
     prepareLists = () => {
@@ -46,37 +69,42 @@ class Section extends Component {
             console.log("Type", typeof entry)
         });
         this.setState({ sections, units, courses })
-        console.log("Sections", this.state.sections)
+        //console.log("Sections", this.state.sections)
         console.log("Units", this.state.units)
-        console.log("Courses", this.state.courses)
+        //console.log("Courses", this.state.courses)
     }
 
-
-    getPost = () => {
-        const content = this.state.posts[0]['fields']['mainText']['content']
-        var res = ""
-
-        content.forEach(part => {
-            try {
-                console.log(part['content']['0']['value'])
-                res.concat(part['content']['value']);
-            } catch (error) {
-
+    renderRichText = (paragraph) => {
+        if(paragraph.nodeType === "embedded-asset-block"){
+            let file = paragraph.data.target.fields.file
+            if(file.hasOwnProperty("url")){
+                return(
+                    <img key={file.url} src={file.url} alt={file.title}/>
+                );
             }
-        });
-        this.setState({ main: res })
+        }else{
+            return(documentToReactComponents(paragraph));
+        }
     }
-
-
-
 
     render() {
         return (<div>
             <NavBar />
-
-            {this.state.posts.map(({ fields }, i) =>
+            <SectionContainer>
+                {this.state.units.map(( obj , i) =>{
+                    return(
+                        <Unit key={i}
+                            id={i}
+                            title={obj.numero}
+                            description={this.renderRichText(obj.descripcion)}
+                        />
+                    );
+                })}
+            </SectionContainer>
+        
+            {/*this.state.posts.map(({ fields }, i) =>
                 <pre key={i}>{JSON.stringify(fields, null, 2)}</pre>
-            )}
+            )*/}
 
 
 

@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css'
 import * as contentful from 'contentful'
 
+/*
 var client = contentful.createClient({
     space: '2hnq8godjkak',
     accessToken: 'ts8s9TA9Xsz1lEzKwJ9U46Yl2QaVRrFG81rAmhbr0Z8'
@@ -18,7 +19,7 @@ client.getEntries().then(entries => {
             console.log(entry.fields)
         }
     })
-})
+})*/
 
 ReactDOM.render(
     <BrowserRouter>
