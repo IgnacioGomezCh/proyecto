@@ -48,20 +48,24 @@ class Section extends Component {
         const info = []
         this.state.posts.forEach(entry => {
             var obj = JSON.parse(JSON.stringify(entry, null, 2))
-            console.log("HERE", obj)
+            //console.log("HERE", obj)
             info.push(obj)
         });
-        console.log(info['mainText'])
+    
 
         const sections = []
         const units = []
         const courses = []
         this.state.posts.forEach(entry => {
             if (entry['fields'].hasOwnProperty('unidad')) {
-                sections.push(entry['fields'])
+                let json = entry['fields']
+                json["id"] = entry.sys.id
+                sections.push(json)
             }
             else if (entry['fields'].hasOwnProperty('numero')) {
-                units.push(entry['fields'])
+                let json = entry['fields']
+                json["id"] = entry.sys.id
+                units.push(json)
             }
             else if (entry['fields'].hasOwnProperty('seccion')) {
                 courses.push(entry['fields'])
@@ -69,7 +73,7 @@ class Section extends Component {
             console.log("Type", typeof entry)
         });
         this.setState({ sections, units, courses })
-        //console.log("Sections", this.state.sections)
+        console.log("Sections", this.state.sections)
         console.log("Units", this.state.units)
         //console.log("Courses", this.state.courses)
     }
@@ -87,31 +91,41 @@ class Section extends Component {
         }
     }
 
+    processSections(unitId) {
+        return this.state.sections.map( (section, i) => {
+            console.log("Section Without Filter",section)
+            console.log("Params",section.unidad.fields.id, unitId)
+            if (section.unidad.fields.id == unitId) {
+                console.log("Section Filter",section)
+                return(
+                    <button key={i} type="button" class="list-group-item list-group-item-action">{section.numeroDeSeccion}</button>
+                );
+            }
+        })
+    } 
+
     render() {
         return (<div>
             <NavBar />
             <SectionContainer>
                 {this.state.units.map(( obj , i) =>{
                     return(
-                        <Unit key={i}
-                            id={i}
-                            title={obj.numero}
-                            description={this.renderRichText(obj.descripcion)}
-                        />
+                        <div>
+                            <Unit key={i}
+                                id={i}
+                                title={obj.numero}
+                                description={this.renderRichText(obj.descripcion)}
+                                sections={this.processSections(obj.id)}
+                            />
+                            <br/>
+                        </div>
                     );
                 })}
             </SectionContainer>
-        
+            
             {/*this.state.posts.map(({ fields }, i) =>
                 <pre key={i}>{JSON.stringify(fields, null, 2)}</pre>
             )*/}
-
-
-
-
-            <p>This is the Blog Page</p>
-            <h1>{this.state.main}</h1>
-            <br />
 
         </div>
         );

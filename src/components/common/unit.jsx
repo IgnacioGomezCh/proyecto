@@ -10,15 +10,16 @@ class Unit extends Component{
     //https://colorlib.com/demo?theme=edusite
 
     render(){
-        const {id,title, description} = this.props
+        const {id,title, description, sections} = this.props
         return(
             <div key={id} class="card">
                 <div class="card-header">{title}</div>
                 <div class="card-body">
                     <h5 class="card-title">{title}</h5>
                     <p class="card-text">{description}</p>
-                    <a href="#" class="btn btn-primary">Empezar</a>
+                    <button onClick={() => this.setState({ open: !this.state.open })} href="#" class="btn btn-primary">Empezar</button>
                 </div>
+                {!this.state.open ? <ul class="list-group">{sections}</ul> : null }
             </div>
         );
     }
