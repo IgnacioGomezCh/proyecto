@@ -57,7 +57,7 @@ class Landing extends Component {
         this.client.getEntry("57JtssG1UUpRmHmZ8ze5GF")
         .then(response =>{
             let content = response.fields.mainText.content
-            //console.log(response.fields.mainText.content)
+            console.log(response.fields.mainText.content)
             this.setState({content: content})
         })
     }

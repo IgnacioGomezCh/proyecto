@@ -4,6 +4,7 @@ import NavBar from './navBar';
 import styled from 'styled-components';
 import Unit from './common/unit';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import "./section.css";
 
 const SectionContainer = styled.section`
     flex-direction: column;
@@ -22,7 +23,8 @@ class Section extends Component {
         sections: [],
         units: [],
         courses: [],
-        main: ""
+        main: "",
+        lessons: [],
     }
     client = contentful.createClient({ space: '2hnq8godjkak', accessToken: 'ts8s9TA9Xsz1lEzKwJ9U46Yl2QaVRrFG81rAmhbr0Z8' })
     componentDidMount() {
@@ -68,14 +70,16 @@ class Section extends Component {
                 units.push(json)
             }
             else if (entry['fields'].hasOwnProperty('seccion')) {
-                courses.push(entry['fields'])
+                let json = entry['fields']
+                json["id"] = entry.sys.id
+                courses.push(json)
             }
             console.log("Type", typeof entry)
         });
         this.setState({ sections, units, courses })
         console.log("Sections", this.state.sections)
         console.log("Units", this.state.units)
-        //console.log("Courses", this.state.courses)
+        console.log("Courses", this.state.courses)
     }
 
     renderRichText = (paragraph) => {
@@ -91,6 +95,17 @@ class Section extends Component {
         }
     }
 
+    processLessons = (sectionId) => {
+        var lessons = []
+        this.state.courses.map((lesson) => {
+            if(lesson.seccion.fields.id == sectionId){
+                lessons.push(lesson)
+            }
+        })
+        console.log("LessonArray",lessons)
+        this.setState({lessons})
+    }
+
     processSections(unitId) {
         return this.state.sections.map( (section, i) => {
             console.log("Section Without Filter",section)
@@ -98,19 +113,31 @@ class Section extends Component {
             if (section.unidad.fields.id == unitId) {
                 console.log("Section Filter",section)
                 return(
-                    <button key={i} type="button" class="list-group-item list-group-item-action">{section.numeroDeSeccion}</button>
+                    <button onClick={()=>this.processLessons(section.id)} data-toggle="modal" data-target="#exampleModalCenter" key={i} type="button" class="list-group-item list-group-item-action">{section.numeroDeSeccion}</button>
                 );
             }
         })
-    } 
+    }
+
+    onSelectLesson = (lessonId) => {
+        const location = {
+            pathname: `lesson/${lessonId}`,
+            props: {
+                pid: lessonId
+            }
+        }
+        this.props.history.push(location);
+    }
 
     render() {
         return (<div>
             <NavBar />
-            <SectionContainer>
+            <center><h1>Unidades disponibles</h1></center>
+            <br style={{marginBottom:"20px"}}/>
+            <div class="row display-flex" style={{marginLeft:"20px", marginRight:"20px"}}>
                 {this.state.units.map(( obj , i) =>{
                     return(
-                        <div>
+                        <div class="col-lg-6">
                             <Unit key={i}
                                 id={i}
                                 title={obj.numero}
@@ -121,11 +148,34 @@ class Section extends Component {
                         </div>
                     );
                 })}
-            </SectionContainer>
+            </div>
             
-            {/*this.state.posts.map(({ fields }, i) =>
-                <pre key={i}>{JSON.stringify(fields, null, 2)}</pre>
-            )*/}
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Seleccione la clase por ver</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 <ul class="list-group">
+                    {this.state.lessons.length==0 ? <center><h6>No hay clases para esta sección</h6></center> : null}
+                    {this.state.lessons.map((lesson, i) => {
+                        return(
+                            <button onClick={()=>{this.onSelectLesson(lesson.id)}} data-dismiss="modal" type="button" class="list-group-item list-group-item-action" key={i}>{lesson.titulo}</button>
+                        );  
+                    })}
+                 </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+            </div>
 
         </div>
         );

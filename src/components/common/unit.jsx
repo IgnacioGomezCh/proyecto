@@ -12,7 +12,7 @@ class Unit extends Component{
     render(){
         const {id,title, description, sections} = this.props
         return(
-            <div key={id} class="card">
+            <div key={id} class="card" style={{height:"100%", marginBottom:"20px"}}>
                 <div class="card-header">{title}</div>
                 <div class="card-body">
                     <h5 class="card-title">{title}</h5>
