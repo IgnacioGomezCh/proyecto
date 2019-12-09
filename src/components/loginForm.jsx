@@ -5,6 +5,7 @@ import NavBar from './navBar';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 
+
 const Container = styled.div`
     width: 100%;
     max-width: 330px;
@@ -16,6 +17,7 @@ const Container = styled.div`
 
 class LoginForm extends Form {
     state = {
+
         data: {
             email: "",
             password: ""
@@ -48,8 +50,9 @@ class LoginForm extends Form {
         this.setState({ title: "New title" });
     }
 
-
     render() {
+
+
         return (
             <div>
                 <NavBar />
@@ -57,11 +60,12 @@ class LoginForm extends Form {
                     <h1>Iniciar Sesión</h1>
                     <form className="form-signin" onSubmit={this.handleSubmit}>
                         {this.renderInput("email", "Correo")}
+
                         {this.renderInputPassword("password", "Contraseña")}
                         {this.renderButton("Entrar")}
 
                     </form>
-                    <br/>
+                    <br />
                     <Link onClick={this.props.changeState}>
                         ¿Nuevo usuario? Regístrese aquí
                     </Link>

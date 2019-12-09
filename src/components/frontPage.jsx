@@ -13,6 +13,7 @@ class FrontPage extends Component {
 
     render() {
         const { flag } = this.state;
+        console.log("HERE");
         return (<div>{flag ? <div><LoginForm changeState={this.handleChangeState} authProps={this.props.authProps}></LoginForm></div> : <RegisterForm authProps={this.props.authProps} ></RegisterForm>}</div>);
     }
 }
