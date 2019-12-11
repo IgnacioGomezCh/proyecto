@@ -5,6 +5,7 @@ import NavBar from './navBar';
 import styled from 'styled-components';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
     width: 100%;
@@ -17,6 +18,7 @@ const Container = styled.div`
 
 class RegisterForm extends Form {
     state = {
+        sexBtn: "",
         startDate: new Date(),
         data: {
             name: "",
@@ -24,7 +26,7 @@ class RegisterForm extends Form {
             email: "",
             password: "",
             ocupation: "Otro",
-
+            sex: ""
         },
         errors: {}
     };
@@ -93,8 +95,18 @@ class RegisterForm extends Form {
         this.setState({ ocupation: "Otro" })
     };
 
+    handleChangeDropdownM = () => {
+        this.setState({ sexBtn: "Masculino" })
+        this.setState({ sex: "male" })
+    };
+
+    handleChangeDropdownF = () => {
+        this.setState({ sexBtn: "Femenino" })
+        this.setState({ sex: "female" })
+    };
+
     render() {
-        const { startDate, ocupation } = this.state;
+        const { startDate, ocupation, sexBtn } = this.state;
         return (
             <div>
                 <NavBar />
@@ -119,12 +131,12 @@ class RegisterForm extends Form {
 
                             <label >Sexo</label>
                             <div class="dropdown" style={{ textAlign: "left" }}>
-                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {ocupation}
+                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButtonSex" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {sexBtn}
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a onClick={this.handleChangeDropdownE} class="dropdown-item" href="#">Masculino</a>
-                                    <a onClick={this.handleChangeDropdownP} class="dropdown-item" href="#">Femenino</a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSex">
+                                    <a onClick={this.handleChangeDropdownM} class="dropdown-item" href="#">Masculino</a>
+                                    <a onClick={this.handleChangeDropdownF} class="dropdown-item" href="#">Femenino</a>
                                 </div>
                             </div>
 
@@ -134,7 +146,11 @@ class RegisterForm extends Form {
                         {this.renderInput("email", "Correo")}
                         {this.renderInputPassword("password", "Contraseña")}
                         {this.renderButton("Registrarse")}
+
                     </form>
+                    <Link onClick={this.props.changeState}>
+                        ¿Ya tienen cuenta? Ingrese aquí
+                        </Link>
                 </Container>
             </div>
         );

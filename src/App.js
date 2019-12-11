@@ -1,11 +1,7 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import './App.css';
-import NavBar from './components/navBar';
-import RegisterForm from './components/registerForm';
-import Landing from './components/landing';
-import LoginForm from './components/loginForm';
-import RecoverForm from './components/recoverForm';
+
 
 //Get configs
 import config from './config';
@@ -15,23 +11,23 @@ import Amplify from 'aws-amplify';
 import { withCustomAuthenticator } from './components/withCustomAuthenticator';
 import Routes from './Routes';
 
-Amplify.configure({Auth : config.auth});
+Amplify.configure({ Auth: config.auth });
 
-class App extends Component{
-  render(){
+class App extends Component {
+  render() {
     const childProps = {
       ... this.props.authProps
     }
 
-    return(
+    return (
       <React.Fragment>
-        <Routes childProps={childProps}/>
+        <Routes childProps={childProps} />
       </React.Fragment>
     )
   }
 }
 
-const AppwithRouter =  withRouter(App)
+const AppwithRouter = withRouter(App)
 const AppWithAuth = withCustomAuthenticator(AppwithRouter)
 /*
 function App() {

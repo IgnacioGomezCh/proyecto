@@ -22,7 +22,7 @@ class NavBar extends Component {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <div className="navbar-nav">
-                        <NavLink className="nav-item nav-link" to="/">
+                        <NavLink className="nav-item nav-link mr-sm-2" to="/">
                             Inicio
                         </NavLink>
                         <NavLink className="nav-item nav-link" to="/sections">
