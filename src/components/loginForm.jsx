@@ -36,9 +36,10 @@ class LoginForm extends Form {
     };
 
     doSubmit = () => {
+
         const { authProps } = this.props;
         const { email, password } = this.state.data;
-        console.log(this.state)
+
         authProps.signIn(email, password)
             .catch((err) => {
                 console.log('Error signIn', err);
@@ -60,7 +61,6 @@ class LoginForm extends Form {
                     <h1>Iniciar Sesión</h1>
                     <form className="form-signin" onSubmit={this.handleSubmit}>
                         {this.renderInput("email", "Correo")}
-
                         {this.renderInputPassword("password", "Contraseña")}
                         {this.renderButton("Entrar")}
 

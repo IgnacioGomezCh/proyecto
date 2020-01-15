@@ -15,6 +15,14 @@ class FrontPage extends Component {
 
     }
 
+    componentDidMount() {
+        const isBlank = window.location.href.substring(window.location.href.lastIndexOf('/') + 1) == "";
+
+        if (isBlank) {
+            window.location.href = "/login"
+        }
+    }
+
     componentDidUpdate() {
         const isRegister = window.location.href.substring(window.location.href.lastIndexOf('/') + 1) == "register";
 

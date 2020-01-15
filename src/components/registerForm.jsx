@@ -48,6 +48,7 @@ class RegisterForm extends Form {
     };
 
     doSubmit = () => {
+        console.log("------------------------------------------------------------------------")
         const { name, lName, email, password } = this.state.data;
         const { authProps } = this.props;
         console.log(this.state)

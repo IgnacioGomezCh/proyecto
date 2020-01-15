@@ -55,11 +55,11 @@ class Landing extends Component {
 
     componentDidMount() {
         this.client.getEntry("57JtssG1UUpRmHmZ8ze5GF")
-        .then(response =>{
-            let content = response.fields.mainText.content
-            console.log(response.fields.mainText.content)
-            this.setState({content: content})
-        })
+            .then(response => {
+                let content = response.fields.mainText.content
+                console.log(response.fields.mainText.content)
+                this.setState({ content: content })
+            })
     }
 
     getUserName = () => {
@@ -75,21 +75,21 @@ class Landing extends Component {
                 <Container>
                     <h1 className="content m-2">Bienvenido</h1>
                     <br style={{ marginTop: "30px" }} />
-                    <button type="button" class="btn btn-secondary" onClick={this.handleClick}>Cerrar Sesión</button>
+                    <button type="button" className="btn btn-secondary" onClick={this.handleClick}>Cerrar Sesión</button>
                 </Container>
                 <Section>
                     <MainContainer>
                         {
-                            this.state.content.map(paragraph =>{
-                                if(paragraph.nodeType === "embedded-asset-block"){
+                            this.state.content.map(paragraph => {
+                                if (paragraph.nodeType === "embedded-asset-block") {
                                     let file = paragraph.data.target.fields.file
-                                    if(file.hasOwnProperty("url")){
-                                        return(
-                                            <img key={file.url} src={file.url} alt={file.title}/>
+                                    if (file.hasOwnProperty("url")) {
+                                        return (
+                                            <img key={file.url} src={file.url} alt={file.title} />
                                         );
                                     }
-                                }else{
-                                    return(documentToReactComponents(paragraph));
+                                } else {
+                                    return (documentToReactComponents(paragraph));
                                 }
                                 /*
                                 if(paragraph.nodeType === "paragraph"){
