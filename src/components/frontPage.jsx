@@ -11,9 +11,17 @@ class FrontPage extends Component {
         console.log(flag);
     }
 
+    handleSetLogin = () => {
+        this.setState({ flag: true })
+    }
+
+    handleSetRegister = () => {
+        this.setState({ flag: false })
+    }
+
     render() {
         const { flag } = this.state;
-        return (<div>{flag ? <div><LoginForm changeState={this.handleChangeState} authProps={this.props.authProps}></LoginForm></div> : <RegisterForm authProps={this.props.authProps} ></RegisterForm>}</div>);
+        return (<div>{flag ? <div><LoginForm changeState={this.handleChangeState} setLogin={this.handleSetLogin} setRegister={this.handleSetRegister} authProps={this.props.authProps}></LoginForm></div> : <RegisterForm changeState={this.handleChangeState} authProps={this.props.authProps} ></RegisterForm>}</div>);
     }
 }
 

@@ -18,7 +18,7 @@ export function withCustomAuthenticator(Comp) {
         }
 
         handleSignUp = (username, password, name) => {
-            this.setState({ username : username, password: password})
+            this.setState({ username: username, password: password })
             return new Promise((resolve, reject) => {
                 Auth.signUp({
                     username: username,
@@ -31,9 +31,9 @@ export function withCustomAuthenticator(Comp) {
                     .then(response => {
                         this.setState({ loading: false });
                         console.log('SignUp', response)
-                        this.handleSignIn(username,password)
+                        this.handleSignIn(username, password)
                         resolve()
-                        
+
                     })
                     .catch(err => {
                         console.log('Error', err);
@@ -44,7 +44,7 @@ export function withCustomAuthenticator(Comp) {
         }
 
         handleSignIn = (username, password) => {
-            this.setState({ username : username,password: password})
+            this.setState({ username: username, password: password })
             return new Promise((resolve, reject) => {
                 Auth.signIn(username, password)
                     .then(response => {
@@ -60,9 +60,9 @@ export function withCustomAuthenticator(Comp) {
                     })
                     .catch(err => {
                         console.log('Error', err);
-                        if(err.code === 'UserNotConfirmedException'){
+                        if (err.code === 'UserNotConfirmedException') {
                             this.setState({ authState: 'confirmAccount', authData: null });
-                        }else{
+                        } else {
                             this.setState({ authState: 'unauthenticated', authData: null });
                         }
                         reject(err.message);
@@ -100,19 +100,19 @@ export function withCustomAuthenticator(Comp) {
 
         handleConfirmSignUp = (code) => {
             const username = this.state.username
-            return new Promise((resolve, reject) =>{
-                Auth.confirmSignUp(username,code,{
-                    forceAliasCreation: true 
-                }).then(response =>{
+            return new Promise((resolve, reject) => {
+                Auth.confirmSignUp(username, code, {
+                    forceAliasCreation: true
+                }).then(response => {
                     console.log(response)
                     const password = this.state.password
-                    this.handleSignIn(username,password)
+                    this.handleSignIn(username, password)
                     resolve()
                 })
-                .catch(err => {
-                    console.log('Error', err);
-                    reject(err.message);
-                })
+                    .catch(err => {
+                        console.log('Error', err);
+                        reject(err.message);
+                    })
             })
         }
 
@@ -139,12 +139,12 @@ export function withCustomAuthenticator(Comp) {
                 };
                 return <RecoverForm authProps={authProps} changeState={this.handleAuthStateChange} />
             }
-            else if(authState === 'confirmAccount'){
+            else if (authState === 'confirmAccount') {
                 const authProps = {
-                    email : this.state.username,
-                    confirmSignUp : this.handleConfirmSignUp
+                    email: this.state.username,
+                    confirmSignUp: this.handleConfirmSignUp
                 }
-                return <ConfirmationForm authProps={authProps} changeState={this.handleAuthStateChange}/>
+                return <ConfirmationForm authProps={authProps} changeState={this.handleAuthStateChange} />
             }
             else if (authState === 'unauthenticated') {
                 const authProps = {
@@ -155,7 +155,8 @@ export function withCustomAuthenticator(Comp) {
             }
             else if (authState === 'signedIn') {
                 const authProps = {
-                    signOut: this.handleSignOut
+                    signOut: this.handleSignOut,
+                    signed: true
                 };
                 return <Comp authProps={authProps} {...this.props} />
             }

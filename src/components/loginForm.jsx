@@ -1,9 +1,12 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import NavBar from './navBar';
+import NavBarExterior from './navBarExterior';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+import { store } from 'react-notifications-component';
 
 const Container = styled.div`
     width: 100%;
@@ -13,6 +16,7 @@ const Container = styled.div`
     box-sizing: border-box;
     text-align: center !important;
 `;
+
 
 class LoginForm extends Form {
     state = {
@@ -40,20 +44,32 @@ class LoginForm extends Form {
         authProps.signIn(email, password)
             .catch((err) => {
                 console.log('Error signIn', err);
-                this.setState({ loading: false });
+                store.addNotification({
+                    title: "Error",
+                    message: err,
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+                this.setState({ errorMessage: err })
             });
     };
-
-    changeTitle = () => {
-        this.setState({ title: "New title" });
-    }
-
 
     render() {
         return (
             <div>
-                <NavBar />
+                <NavBarExterior setLogin={this.props.setLogin} setRegister={this.props.setRegister} />
+                <ReactNotification />
+
                 <Container>
+
+
                     <h1>Iniciar Sesión</h1>
                     <form className="form-signin" onSubmit={this.handleSubmit}>
                         {this.renderInput("email", "Correo")}
@@ -61,7 +77,7 @@ class LoginForm extends Form {
                         {this.renderButton("Entrar")}
 
                     </form>
-                    <br/>
+                    <br />
                     <Link onClick={this.props.changeState}>
                         ¿Nuevo usuario? Regístrese aquí
                     </Link>
@@ -70,5 +86,8 @@ class LoginForm extends Form {
         );
     }
 }
+
+/*{this.state.errorMessage &&
+                        <p className="error"> {this.state.errorMessage} </p>}*/
 
 export default LoginForm;

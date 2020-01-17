@@ -55,11 +55,11 @@ class Landing extends Component {
 
     componentDidMount() {
         this.client.getEntry("57JtssG1UUpRmHmZ8ze5GF")
-        .then(response =>{
-            let content = response.fields.mainText.content
-            console.log(response.fields.mainText.content)
-            this.setState({content: content})
-        })
+            .then(response => {
+                let content = response.fields.mainText.content
+                console.log(response.fields.mainText.content)
+                this.setState({ content: content })
+            })
     }
 
     getUserName = () => {
@@ -67,11 +67,9 @@ class Landing extends Component {
         console.log(user)
     }
     render() {
-        const { authProps } = this.props;
-        console.log(authProps)
         return (
             <div>
-                <NavBar />
+                <NavBar signOut={this.handleClick} />
                 <Container>
                     <h1 className="content m-2">Bienvenido</h1>
                     <br style={{ marginTop: "30px" }} />
@@ -80,33 +78,17 @@ class Landing extends Component {
                 <Section>
                     <MainContainer>
                         {
-                            this.state.content.map(paragraph =>{
-                                if(paragraph.nodeType === "embedded-asset-block"){
+                            this.state.content.map(paragraph => {
+                                if (paragraph.nodeType === "embedded-asset-block") {
                                     let file = paragraph.data.target.fields.file
-                                    if(file.hasOwnProperty("url")){
-                                        return(
-                                            <img key={file.url} src={file.url} alt={file.title}/>
+                                    if (file.hasOwnProperty("url")) {
+                                        return (
+                                            <img key={file.url} src={file.url} alt={file.title} />
                                         );
                                     }
-                                }else{
-                                    return(documentToReactComponents(paragraph));
+                                } else {
+                                    return (documentToReactComponents(paragraph));
                                 }
-                                /*
-                                if(paragraph.nodeType === "paragraph"){
-                                    //console.log(paragraph)
-                                    //Change this variable
-                                    let textToShow = paragraph.content[0].value
-                                    return(
-                                        <p>{textToShow}</p>  
-                                    );
-                                }else if(paragraph.nodeType === "embedded-asset-block"){
-                                    let file = paragraph.data.target.fields.file
-                                    if(file.hasOwnProperty("url")){
-                                        return(
-                                            <img key={file.url} src={file.url} alt={file.title}/>
-                                        );
-                                    }
-                                }*/
                             })
                         }
                     </MainContainer>

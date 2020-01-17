@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { Link, NavLink } from "react-router-dom";
 
 class NavBar extends Component {
-    render() {
 
+    handleClick = () => {
+        console.log("HERE")
+        //this.props.signOut()
+    }
+
+    render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light m-3" >
-                <Link className="navbar-brand" to="/register">
+                <h4>
                     Oficina de Equidad Género
-                </Link>
+                </h4>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -25,16 +30,23 @@ class NavBar extends Component {
                         <NavLink className="nav-item nav-link" to="/">
                             Inicio
                         </NavLink>
+                        <NavLink className="nav-item nav-link" to="/profile">
+                            Perfil
+                        </NavLink>
                         <NavLink className="nav-item nav-link" to="/sections">
-                            Secciones
+                            Cursos
                         </NavLink>
-                        <NavLink className="nav-item nav-link" to="/login">
-                            Inicio de Sesión
+                        <NavLink className="nav-item nav-link" to="/contact">
+                            Contáctenos
                         </NavLink>
-                        <NavLink className="nav-item nav-link" to="/recover">
-                            Recuperar Contraseña
+                        <NavLink className="nav-item nav-link" to="/news">
+                            Noticias
                         </NavLink>
                     </div>
+                </div>
+
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" onClick={this.props.signOut} href="/">Cerrar Sesión</a>
                 </div>
             </nav>
         );

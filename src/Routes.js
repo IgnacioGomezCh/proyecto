@@ -13,7 +13,7 @@ const Routes = ({ childProps }) => (
         )} />
         <AppliedRoute path="/home" exact component={Landing} props={childProps} />
         <AppliedRoute path="/sections" exact component={Section} props={childProps} />
-        <AppliedRoute path="/lesson/:lessonId" exact component={Lesson} props={childProps}/>
+        <AppliedRoute path="/lesson/:lessonId" exact component={Lesson} props={childProps} />
         <AppliedRoute props={childProps} component={NotFound} />
     </Switch>
 );
