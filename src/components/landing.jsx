@@ -73,7 +73,7 @@ class Landing extends Component {
                 <Container>
                     <h1 className="content m-2">Bienvenido</h1>
                     <br style={{ marginTop: "30px" }} />
-                    <button type="button" class="btn btn-secondary" onClick={this.handleClick}>Cerrar Sesión</button>
+
                 </Container>
                 <Section>
                     <MainContainer>

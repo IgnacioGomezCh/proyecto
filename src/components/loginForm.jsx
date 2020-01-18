@@ -37,6 +37,18 @@ class LoginForm extends Form {
             .label("Contraseña")
     };
 
+    errorParser(err) {
+        if (err === "Incorrect username or password.") {
+            return "Nombre de usuario o contraseña errónea"
+        }
+        else if (err === "User does not exist.") {
+            return "Usuario no existe"
+        }
+        else {
+            return "Error al iniciar sesión"
+        }
+    }
+
     doSubmit = () => {
         const { authProps } = this.props;
         const { email, password } = this.state.data;
@@ -46,7 +58,7 @@ class LoginForm extends Form {
                 console.log('Error signIn', err);
                 store.addNotification({
                     title: "Error",
-                    message: err,
+                    message: this.errorParser(err),
                     type: "danger",
                     insert: "top",
                     container: "top-right",
