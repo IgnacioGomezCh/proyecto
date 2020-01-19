@@ -28,6 +28,36 @@ class Profile extends Component {
         ocupation: "",
         sex: ""
     }
+
+    componentDidMount(){
+        this.props.userAttributes()
+        .then(attr =>{
+            console.log("Profile",attr)
+            if(attr.hasOwnProperty("name")){
+                let name = attr["name"]
+                this.setState({ name })
+            }
+            if(attr.hasOwnProperty("custom:occupation")){
+                let ocupation = attr["custom:occupation"]
+                this.setState({ ocupation })
+            }
+            if(attr.hasOwnProperty("email")){
+                let email = attr["email"]
+                this.setState({ email })
+            }
+            if(attr.hasOwnProperty("birthdate")){
+                let birthday = attr["birthdate"]
+                this.setState({ birthday })
+            }
+            if(attr.hasOwnProperty("gender")){
+                let sex = attr["gender"]
+                this.setState({ sex })
+            }
+
+        })
+    }
+
+
     render() {
         const { name, email, birthday, ocupation, sex } = this.state
         return (<div>

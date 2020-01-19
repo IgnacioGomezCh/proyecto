@@ -116,6 +116,21 @@ export function withCustomAuthenticator(Comp) {
             })
         }
 
+        handleUserAttributes = () => {
+            
+            return new Promise((resolve,reject) => {
+                Auth.currentAuthenticatedUser()
+                .then(user => {
+                    const { attributes } = user
+                    resolve(attributes)
+                })
+                .catch(err => {
+                    console.log("ErrorAttributes",err)
+                    reject(err.message);
+                })
+            })
+        }
+
 
         componentDidMount() {
             Auth.currentSession()
@@ -156,7 +171,8 @@ export function withCustomAuthenticator(Comp) {
             else if (authState === 'signedIn') {
                 const authProps = {
                     signOut: this.handleSignOut,
-                    signed: true
+                    signed: true,
+                    userAttributes: this.handleUserAttributes
                 };
                 return <Comp authProps={authProps} {...this.props} />
             }
