@@ -22,7 +22,7 @@ const Container = styled.div`
 
 class Profile extends Component {
     state = {
-        name: "asdsadsad",
+        name: "",
         email: "",
         birthday: "",
         ocupation: "",
