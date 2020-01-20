@@ -39,9 +39,7 @@ class NavBar extends Component {
                         <NavLink className="nav-item nav-link" to="/contact">
                             Contáctenos
                         </NavLink>
-                        <NavLink className="nav-item nav-link" to="/news">
-                            Noticias
-                        </NavLink>
+
                     </div>
                 </div>
 

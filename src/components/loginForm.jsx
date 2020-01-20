@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import ReactNotification from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
 import { store } from 'react-notifications-component';
+import Loader from 'react-loader-spinner'
 
 const Container = styled.div`
     width: 100%;
@@ -20,6 +21,7 @@ const Container = styled.div`
 
 class LoginForm extends Form {
     state = {
+        loading: false,
         data: {
             email: "",
             password: ""
@@ -50,11 +52,13 @@ class LoginForm extends Form {
     }
 
     doSubmit = () => {
+        this.setState({ loading: true })
         const { authProps } = this.props;
         const { email, password } = this.state.data;
         console.log(this.state)
         authProps.signIn(email, password)
             .catch((err) => {
+                this.setState({ loading: false })
                 console.log('Error signIn', err);
                 store.addNotification({
                     title: "Error",
@@ -74,6 +78,7 @@ class LoginForm extends Form {
     };
 
     render() {
+        const { loading } = this.state
         return (
             <div>
                 <NavBarExterior setLogin={this.props.setLogin} setRegister={this.props.setRegister} />
@@ -87,13 +92,14 @@ class LoginForm extends Form {
                         {this.renderInput("email", "Correo")}
                         {this.renderInputPassword("password", "Contraseña")}
                         {this.renderButton("Entrar")}
-
                     </form>
                     <br />
                     <Link onClick={this.props.changeState}>
                         ¿Nuevo usuario? Regístrese aquí
                     </Link>
+                    {loading ? <Loader type="Puff" color="#696969" height={50} width={50} /> : null}
                 </Container>
+
             </div>
         );
     }

@@ -6,6 +6,7 @@ import NotFound from './components/notFound';
 import Section from './components/section';
 import Lesson from './components/lessonWithId';
 import Profile from './components/profile';
+import Contact from './components/contact';
 
 const Routes = ({ childProps }) => (
     <Switch>
@@ -15,6 +16,7 @@ const Routes = ({ childProps }) => (
         <AppliedRoute path="/home" exact component={Landing} props={childProps} />
         <AppliedRoute path="/sections" exact component={Section} props={childProps} />
         <AppliedRoute path="/profile" exact component={Profile} props={childProps} />
+        <AppliedRoute path="/contact" exact component={Contact} props={childProps} />
         <AppliedRoute path="/lesson/:lessonId" exact component={Lesson} props={childProps} />
         <AppliedRoute props={childProps} component={NotFound} />
     </Switch>
