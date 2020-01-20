@@ -17,7 +17,7 @@ export function withCustomAuthenticator(Comp) {
             }
         }
 
-        handleSignUp = (username, password, name) => {
+        handleSignUp = (username, password, name, gender, birthdate, ocupation) => {
             this.setState({ username: username, password: password })
             return new Promise((resolve, reject) => {
                 Auth.signUp({
@@ -25,7 +25,10 @@ export function withCustomAuthenticator(Comp) {
                     password: password,
                     attributes: {
                         email: username,
-                        name: name
+                        name: name,
+                        gender: gender,
+                        birthdate: birthdate,
+                        "custom:occupation": ocupation
                     }
                 })
                     .then(response => {
@@ -117,17 +120,17 @@ export function withCustomAuthenticator(Comp) {
         }
 
         handleUserAttributes = () => {
-            
-            return new Promise((resolve,reject) => {
+
+            return new Promise((resolve, reject) => {
                 Auth.currentAuthenticatedUser()
-                .then(user => {
-                    const { attributes } = user
-                    resolve(attributes)
-                })
-                .catch(err => {
-                    console.log("ErrorAttributes",err)
-                    reject(err.message);
-                })
+                    .then(user => {
+                        const { attributes } = user
+                        resolve(attributes)
+                    })
+                    .catch(err => {
+                        console.log("ErrorAttributes", err)
+                        reject(err.message);
+                    })
             })
         }
 

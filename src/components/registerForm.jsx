@@ -5,6 +5,7 @@ import NavBarExterior from './navBarExterior';
 import styled from 'styled-components';
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Container = styled.div`
     width: 100%;
@@ -19,13 +20,14 @@ class RegisterForm extends Form {
     state = {
         sexBtn: "",
         startDate: new Date(),
+        ocupation: "Otro",
+        sex: "male",
         data: {
             name: "",
             lName: "",
             email: "",
-            password: "",
-            ocupation: "Otro",
-            sex: ""
+            password: ""
+
         },
         errors: {}
     };
@@ -48,17 +50,18 @@ class RegisterForm extends Form {
 
     doSubmit = () => {
         const { name, lName, email, password } = this.state.data;
+        const { ocupation, sex } = this.state
         const { authProps } = this.props;
-        console.log(this.state)
+
         const fullName = name + " " + lName
-        authProps.signUp(email, password, fullName)
+        authProps.signUp(email, password, fullName, sex, this.formatDate(this.state.startDate), ocupation)
             .catch((err) => {
                 console.log('Error signun', err);
                 this.setState({ loading: false });
             });
     };
 
-    handleChange = startDate => {
+    handleChangeDate = startDate => {
         this.setState({
             startDate
         });
@@ -143,7 +146,7 @@ class RegisterForm extends Form {
                                 </div>
                             </div>
                             <label >Fecha de Nacimiento</label>
-                            <DatePicker style={{ width: "100%" }} className="form-control" selected={startDate} onChange={this.handleChange} />
+                            <DatePicker style={{ width: "100%" }} className="form-control" selected={startDate} onChange={this.handleChangeDate} />
 
                         </div>
                         {this.renderInput("email", "Correo")}

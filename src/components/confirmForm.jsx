@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Joi from "joi-browser";
 import Form from "./common/form";
 import styled from 'styled-components';
-import NavBar from './navBar';
+import NavBarExterior from './navBarExterior';
 
 
 const Container = styled.div`
@@ -13,6 +13,7 @@ const Container = styled.div`
     box-sizing: border-box;
     text-align: center !important;
 `;
+
 
 class ConfirmationForm extends Form {
     state = {
@@ -47,7 +48,7 @@ class ConfirmationForm extends Form {
     render() {
         return (
             <div>
-                <NavBar />
+                <NavBarExterior />
                 <Container>
                     <h1>Confirmar Usuario</h1>
                     <form onSubmit={this.handleSubmit}>
