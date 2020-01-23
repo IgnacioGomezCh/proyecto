@@ -28,7 +28,7 @@ class Contact extends Component {
                     Telefono
                 </h4>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="25502776" aria-label="Username" aria-describedby="basic-addon1" disabled />
+                    <input type="text" class="form-control" placeholder="2550-2776" aria-label="Username" aria-describedby="basic-addon1" disabled />
                 </div>
                 <h4>
                     Correo

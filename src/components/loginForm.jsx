@@ -8,6 +8,8 @@ import ReactNotification from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
 import { store } from 'react-notifications-component';
 import Loader from 'react-loader-spinner'
+import logo_tec from '../assets/logo-tec.png'
+import logo_eg from '../assets/equidad-color.png'
 
 const Container = styled.div`
     width: 100%;
@@ -112,8 +114,10 @@ class LoginForm extends Form {
                 <ReactNotification />
 
                 <Container>
-
-
+                    <center>
+                        <img src={logo_tec} style={{ width: "50%", height: "auto" }} />
+                        <img src={logo_eg} style={{ width: "50%", height: "auto" }} />
+                    </center>
                     <h1>Iniciar Sesión</h1>
                     <form className="form-signin" onSubmit={this.handleSubmit}>
                         {this.renderInput("email", "Correo")}

@@ -90,6 +90,7 @@ class NewsLast extends Component {
                             }
                         })
                     }
+
                 </MainContainer>
             </Section>
 
