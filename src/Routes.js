@@ -7,6 +7,8 @@ import Section from './components/section';
 import Lesson from './components/lessonWithId';
 import Profile from './components/profile';
 import Contact from './components/contact';
+import News from './components/news';
+import NewsWithId from './components/newsWithId'
 
 const Routes = ({ childProps }) => (
     <Switch>
@@ -18,6 +20,8 @@ const Routes = ({ childProps }) => (
         <AppliedRoute path="/profile" exact component={Profile} props={childProps} />
         <AppliedRoute path="/contact" exact component={Contact} props={childProps} />
         <AppliedRoute path="/lesson/:lessonId" exact component={Lesson} props={childProps} />
+        <AppliedRoute path="/news" exact component={News} props={childProps} />
+        <AppliedRoute path="/news/:newsId" exact component={NewsWithId} props={childProps} />
         <AppliedRoute props={childProps} component={NotFound} />
     </Switch>
 );

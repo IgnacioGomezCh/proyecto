@@ -18,9 +18,9 @@ const Container = styled.div`
 
 class RegisterForm extends Form {
     state = {
-        sexBtn: "",
+        sexBtn: "Masculino",
         startDate: new Date(),
-        ocupation: "Otro",
+        ocupation: "Administrativo",
         sex: "male",
         data: {
             name: "",
@@ -35,24 +35,75 @@ class RegisterForm extends Form {
     schema = {
         name: Joi.string()
             .required()
-            .label("Nombre"),
+            .label("Nombre")
+            .error(errors => {
+                errors.forEach(err => {
+                    switch (err.type) {
+                        case "any.empty":
+                            err.message = "El nombre no puede ser vacío!";
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                return errors;
+            }),
         lName: Joi.string()
             .required()
-            .label("Apellido"),
+            .label("Apellido")
+            .error(errors => {
+                errors.forEach(err => {
+                    switch (err.type) {
+                        case "any.empty":
+                            err.message = "El apellido no puede ser vacío!";
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                return errors;
+            }),
         email: Joi.string()
             .required()
             .email()
-            .label("Correo"),
+            .label("Correo")
+            .error(errors => {
+                errors.forEach(err => {
+                    switch (err.type) {
+                        case "any.empty":
+                            err.message = "El correo no puede ser vacío!";
+                            break;
+                        case "string.email":
+                            err.message = "Debe ser un correo válido!";
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                return errors;
+            }),
         password: Joi.string()
             .required()
             .label("Contraseña")
+            .error(errors => {
+                errors.forEach(err => {
+                    switch (err.type) {
+                        case "any.empty":
+                            err.message = "La contraseña no puede ser vacía!";
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                return errors;
+            })
     };
 
     doSubmit = () => {
         const { name, lName, email, password } = this.state.data;
         const { ocupation, sex } = this.state
         const { authProps } = this.props;
-
+        console.log(this.formatDate(this.state.startDate))
         const fullName = name + " " + lName
         authProps.signUp(email, password, fullName, sex, this.formatDate(this.state.startDate), ocupation)
             .catch((err) => {
@@ -110,6 +161,11 @@ class RegisterForm extends Form {
         this.setState({ sex: "female" })
     };
 
+    handleChangeDropdownOth = () => {
+        this.setState({ sexBtn: "Otro" })
+        this.setState({ sex: "other" })
+    };
+
     render() {
         const { startDate, ocupation, sexBtn } = this.state;
         return (
@@ -143,10 +199,11 @@ class RegisterForm extends Form {
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSex">
                                     <a onClick={this.handleChangeDropdownM} class="dropdown-item" href="#">Masculino</a>
                                     <a onClick={this.handleChangeDropdownF} class="dropdown-item" href="#">Femenino</a>
+                                    <a onClick={this.handleChangeDropdownOth} class="dropdown-item" href="#">Other</a>
                                 </div>
                             </div>
                             <label >Fecha de Nacimiento</label>
-                            <DatePicker style={{ width: "100%" }} className="form-control" selected={startDate} onChange={this.handleChangeDate} />
+                            <DatePicker dateFormat="dd-MM-yyyy" style={{ width: "100%" }} className="form-control" selected={startDate} onChange={this.handleChangeDate} />
 
                         </div>
                         {this.renderInput("email", "Correo")}

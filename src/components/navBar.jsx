@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 class NavBar extends Component {
-
-    handleClick = () => {
-        console.log("HERE")
-        //this.props.signOut()
-    }
 
     render() {
         return (
@@ -38,6 +33,9 @@ class NavBar extends Component {
                         </NavLink>
                         <NavLink className="nav-item nav-link" to="/contact">
                             Contáctenos
+                        </NavLink>
+                        <NavLink className="nav-item nav-link" to="/news">
+                            Noticias
                         </NavLink>
 
                     </div>

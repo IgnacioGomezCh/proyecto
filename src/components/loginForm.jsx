@@ -33,10 +33,37 @@ class LoginForm extends Form {
         email: Joi.string()
             .required()
             .email()
-            .label("Correo"),
+            .label("Correo")
+            .error(errors => {
+                errors.forEach(err => {
+                    switch (err.type) {
+                        case "any.empty":
+                            err.message = "El correo no puede ser vacío!";
+                            break;
+                        case "string.email":
+                            err.message = "Debe ser un correo válido!";
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                return errors;
+            }),
         password: Joi.string()
             .required()
             .label("Contraseña")
+            .error(errors => {
+                errors.forEach(err => {
+                    switch (err.type) {
+                        case "any.empty":
+                            err.message = "La contraseña no puede ser vacía!";
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                return errors;
+            })
     };
 
     errorParser(err) {
@@ -104,8 +131,5 @@ class LoginForm extends Form {
         );
     }
 }
-
-/*{this.state.errorMessage &&
-                        <p className="error"> {this.state.errorMessage} </p>}*/
 
 export default LoginForm;
