@@ -29,39 +29,52 @@ class Profile extends Component {
         sex: ""
     }
 
-    componentDidMount(){
-        this.props.userAttributes()
-        .then(attr =>{
-            console.log("Profile",attr)
-            if(attr.hasOwnProperty("name")){
-                let name = attr["name"]
-                this.setState({ name })
-            }
-            if(attr.hasOwnProperty("custom:occupation")){
-                let ocupation = attr["custom:occupation"]
-                this.setState({ ocupation })
-            }
-            if(attr.hasOwnProperty("email")){
-                let email = attr["email"]
-                this.setState({ email })
-            }
-            if(attr.hasOwnProperty("birthdate")){
-                let birthday = attr["birthdate"]
-                this.setState({ birthday })
-            }
-            if(attr.hasOwnProperty("gender")){
-                let sex = attr["gender"]
-                this.setState({ sex })
-            }
+    handleClick = () => {
+        this.props.signOut()
+    }
 
-        })
+    componentDidMount() {
+        this.props.userAttributes()
+            .then(attr => {
+                console.log("Profile", attr)
+                if (attr.hasOwnProperty("name")) {
+                    let name = attr["name"]
+                    this.setState({ name })
+                }
+                if (attr.hasOwnProperty("custom:occupation")) {
+                    let ocupation = attr["custom:occupation"]
+                    this.setState({ ocupation })
+                }
+                if (attr.hasOwnProperty("email")) {
+                    let email = attr["email"]
+                    this.setState({ email })
+                }
+                if (attr.hasOwnProperty("birthdate")) {
+                    let birthday = attr["birthdate"]
+                    this.setState({ birthday })
+                }
+                if (attr.hasOwnProperty("gender")) {
+                    let sex = attr["gender"]
+                    if (sex === "male") {
+                        this.setState({ sex: "Masculino" })
+                    }
+                    else if (sex === "female") {
+                        this.setState({ sex: "Femenenino" })
+                    }
+                    else {
+                        this.setState({ sex: "Otro" })
+                    }
+
+                }
+
+            })
     }
 
 
     render() {
         const { name, email, birthday, ocupation, sex } = this.state
         return (<div>
-            <NavBar />
+            <NavBar signOut={this.handleClick} />
             <Container>
                 <h1>Perfil</h1>
                 <br style={{ marginTop: "30px" }} />
