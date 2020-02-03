@@ -74,7 +74,7 @@ class Profile extends Component {
     render() {
         const { name, email, birthday, ocupation, sex } = this.state
         return (<div>
-            <NavBar signOut={this.handleClick} />
+            <NavBar signOut={() => this.handleClick()} />
             <Container>
                 <h1>Perfil</h1>
                 <br style={{ marginTop: "30px" }} />

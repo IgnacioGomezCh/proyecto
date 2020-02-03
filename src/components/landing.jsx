@@ -69,7 +69,7 @@ class Landing extends Component {
     render() {
         return (
             <div>
-                <NavBar signOut={this.handleClick} />
+                <NavBar signOut={() => this.handleClick()} />
                 <Container>
                     <h1 className="content m-2">Bienvenido</h1>
                     <br style={{ marginTop: "30px" }} />

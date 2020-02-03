@@ -98,7 +98,7 @@ class News extends Component {
 
     render() {
         return (<div>
-            <NavBar signOut={this.handleClick} />
+            <NavBar signOut={() => this.handleClick()} />
             <Container>
                 <center><h1>Unidades disponibles</h1></center>
                 <br style={{ marginBottom: "20px" }} />

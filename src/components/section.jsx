@@ -30,7 +30,7 @@ class Section extends Component {
     componentDidMount() {
         this.fetchPosts().then(this.setPosts);
     }
-    fetchPosts = () => this.client.getEntries();
+    fetchPosts = () => this.client.getEntries({ 'order': 'sys.createdAt' });
     setPosts = response => {
         this.setState({ posts: response.items })
         this.prepareLists()
@@ -39,11 +39,15 @@ class Section extends Component {
     }
 
     showEntries = () => {
-        this.state.posts.forEach( entry => {
-            if(entry.fields){
+        this.state.posts.forEach(entry => {
+            if (entry.fields) {
                 console.log(entry.fields)
             }
         })
+    }
+
+    handleClick = () => {
+        this.props.signOut()
     }
 
     prepareLists = () => {
@@ -53,7 +57,7 @@ class Section extends Component {
             //console.log("HERE", obj)
             info.push(obj)
         });
-    
+
 
         const sections = []
         const units = []
@@ -83,37 +87,37 @@ class Section extends Component {
     }
 
     renderRichText = (paragraph) => {
-        if(paragraph.nodeType === "embedded-asset-block"){
+        if (paragraph.nodeType === "embedded-asset-block") {
             let file = paragraph.data.target.fields.file
-            if(file.hasOwnProperty("url")){
-                return(
-                    <img key={file.url} src={file.url} alt={file.title}/>
+            if (file.hasOwnProperty("url")) {
+                return (
+                    <img key={file.url} src={file.url} alt={file.title} />
                 );
             }
-        }else{
-            return(documentToReactComponents(paragraph));
+        } else {
+            return (documentToReactComponents(paragraph));
         }
     }
 
     processLessons = (sectionId) => {
         var lessons = []
         this.state.courses.map((lesson) => {
-            if(lesson.seccion.fields.id == sectionId){
+            if (lesson.seccion.fields.id == sectionId) {
                 lessons.push(lesson)
             }
         })
-        console.log("LessonArray",lessons)
-        this.setState({lessons})
+        console.log("LessonArray", lessons)
+        this.setState({ lessons })
     }
 
     processSections(unitId) {
-        return this.state.sections.map( (section, i) => {
-            console.log("Section Without Filter",section)
-            console.log("Params",section.unidad.fields.id, unitId)
+        return this.state.sections.map((section, i) => {
+            console.log("Section Without Filter", section)
+            console.log("Params", section.unidad.fields.id, unitId)
             if (section.unidad.fields.id == unitId) {
-                console.log("Section Filter",section)
-                return(
-                    <button onClick={()=>this.processLessons(section.id)} data-toggle="modal" data-target="#exampleModalCenter" key={i} type="button" class="list-group-item list-group-item-action">{section.numeroDeSeccion}</button>
+                console.log("Section Filter", section)
+                return (
+                    <button onClick={() => this.processLessons(section.id)} data-toggle="modal" data-target="#exampleModalCenter" key={i} type="button" class="list-group-item list-group-item-action">{section.numeroDeSeccion}</button>
                 );
             }
         })
@@ -131,12 +135,12 @@ class Section extends Component {
 
     render() {
         return (<div>
-            <NavBar />
+            <NavBar signOut={() => this.handleClick()} />
             <center><h1>Unidades disponibles</h1></center>
-            <br style={{marginBottom:"20px"}}/>
-            <div class="row display-flex" style={{marginLeft:"20px", marginRight:"20px"}}>
-                {this.state.units.map(( obj , i) =>{
-                    return(
+            <br style={{ marginBottom: "20px" }} />
+            <div class="row display-flex" style={{ marginLeft: "20px", marginRight: "20px" }}>
+                {this.state.units.map((obj, i) => {
+                    return (
                         <div class="col-lg-6">
                             <Unit key={i}
                                 id={i}
@@ -144,37 +148,37 @@ class Section extends Component {
                                 description={this.renderRichText(obj.descripcion)}
                                 sections={this.processSections(obj.id)}
                             />
-                            <br/>
+                            <br />
                         </div>
                     );
                 })}
             </div>
-            
+
 
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Seleccione la clase por ver</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Seleccione la clase por ver</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group">
+                                {this.state.lessons.length == 0 ? <center><h6>No hay clases para esta sección</h6></center> : null}
+                                {this.state.lessons.map((lesson, i) => {
+                                    return (
+                                        <button onClick={() => { this.onSelectLesson(lesson.id) }} data-dismiss="modal" type="button" class="list-group-item list-group-item-action" key={i}>{lesson.titulo}</button>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                 <ul class="list-group">
-                    {this.state.lessons.length==0 ? <center><h6>No hay clases para esta sección</h6></center> : null}
-                    {this.state.lessons.map((lesson, i) => {
-                        return(
-                            <button onClick={()=>{this.onSelectLesson(lesson.id)}} data-dismiss="modal" type="button" class="list-group-item list-group-item-action" key={i}>{lesson.titulo}</button>
-                        );  
-                    })}
-                 </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                </div>
-                </div>
-            </div>
             </div>
 
         </div>

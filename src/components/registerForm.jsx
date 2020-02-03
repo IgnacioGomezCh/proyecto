@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+import { store } from 'react-notifications-component';
+import Loader from 'react-loader-spinner'
 
 const Container = styled.div`
     width: 100%;
@@ -18,6 +22,7 @@ const Container = styled.div`
 
 class RegisterForm extends Form {
     state = {
+        loading: false,
         sexBtn: "Masculino",
         startDate: new Date(),
         ocupation: "Administrativo",
@@ -84,12 +89,16 @@ class RegisterForm extends Form {
             }),
         password: Joi.string()
             .required()
+            .min(8)
             .label("Contraseña")
             .error(errors => {
                 errors.forEach(err => {
                     switch (err.type) {
                         case "any.empty":
                             err.message = "La contraseña no puede ser vacía!";
+                            break;
+                        case "string.min":
+                            err.message = "La contraseña debe tener al menos 8 caracteres";
                             break;
                         default:
                             break;
@@ -107,8 +116,22 @@ class RegisterForm extends Form {
         const fullName = name + " " + lName
         authProps.signUp(email, password, fullName, sex, this.formatDate(this.state.startDate), ocupation)
             .catch((err) => {
-                console.log('Error signun', err);
-                this.setState({ loading: false });
+                this.setState({ loading: false })
+                console.log('Error signIn', err);
+                store.addNotification({
+                    title: "Error",
+                    message: this.errorParser(err),
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+                this.setState({ errorMessage: err })
             });
     };
 
@@ -166,11 +189,27 @@ class RegisterForm extends Form {
         this.setState({ sex: "other" })
     };
 
+    errorParser(err) {
+        if (err === "An account with the given email already exists.") {
+            return "La cuenta de correo ya se encuentra registrada."
+        }
+        else if (err === "1 validation error detected: Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6") {
+            return "La contraseña debe ser de tamaño"
+        }
+        else if (err === "Password did not conform with policy: Password must have uppercase characters" || err === "Password did not conform with policy: Password must have lowercase characters") {
+            return "La contraseña debe tener mayúsculas y minúsculas."
+        }
+        else {
+            return "Error al iniciar sesión"
+        }
+    }
+
     render() {
-        const { startDate, ocupation, sexBtn } = this.state;
+        const { startDate, ocupation, sexBtn, loading } = this.state;
         return (
             <div>
                 <NavBarExterior setLogin={this.props.setLogin} setRegister={this.props.setRegister} />
+                <ReactNotification />
                 <Container>
                     <h1>Nuevo Usuario</h1>
                     <form onSubmit={this.handleSubmit}>
@@ -214,6 +253,7 @@ class RegisterForm extends Form {
                     <Link onClick={this.props.changeState}>
                         ¿Ya tiene cuenta? Ingrese aquí
                     </Link>
+                    {loading ? <Loader type="Puff" color="#696969" height={50} width={50} /> : null}
                 </Container>
             </div>
         );

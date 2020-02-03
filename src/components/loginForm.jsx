@@ -115,7 +115,7 @@ class LoginForm extends Form {
 
                 <Container>
                     <center>
-                        <img src={logo_tec} style={{ width: "50%", height: "auto" }} />
+                        <img src={logo_tec} style={{ width: "100%", height: "auto" }} />
                         <img src={logo_eg} style={{ width: "50%", height: "auto" }} />
                     </center>
                     <h1>Iniciar Sesión</h1>
