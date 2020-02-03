@@ -185,7 +185,7 @@ class RegisterForm extends Form {
     };
 
     handleChangeDropdownP = () => {
-        this.setState({ ocupation: "Profesor" })
+        this.setState({ ocupation: "Docente" })
     };
 
     handleChangeDropdownO = () => {
@@ -242,7 +242,7 @@ class RegisterForm extends Form {
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a onClick={this.handleChangeDropdownE} class="dropdown-item" href="#">Estudiante</a>
-                                    <a onClick={this.handleChangeDropdownP} class="dropdown-item" href="#">Profesor</a>
+                                    <a onClick={this.handleChangeDropdownP} class="dropdown-item" href="#">Docente</a>
                                     <a onClick={this.handleChangeDropdownA} class="dropdown-item" href="#">Administrativo</a>
                                     <a onClick={this.handleChangeDropdownO} class="dropdown-item" href="#">Otro</a>
                                 </div>
