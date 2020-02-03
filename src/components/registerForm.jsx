@@ -136,9 +136,27 @@ class RegisterForm extends Form {
     };
 
     handleChangeDate = startDate => {
-        this.setState({
-            startDate
-        });
+        const today = new Date()
+        if (startDate > today) {
+            store.addNotification({
+                title: "Error",
+                message: "La fecha de nacimiento no puese ser mayor que la fecha actual",
+                type: "danger",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    onScreen: true
+                }
+            });
+        }
+        else {
+            this.setState({
+                startDate
+            });
+        }
     };
 
     formatDate(date) {
